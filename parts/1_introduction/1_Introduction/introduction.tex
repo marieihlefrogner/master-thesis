@@ -1,0 +1,47 @@
+\section{Motivation}
+
+The concept of Artificial Intelligence (AI) was introduced more than 80 years ago by among others Alan Turing \cite{turing1938}. We have come a long way when it comes to the type of technology, and AI is a heavily discussed topic today. Artificial \textit{General} Intelligence (AGI) is the concept of creating independent AI that can \textit{think} on its own, which many are either looking forward to or afraid of (probably because of movies like the Terminator), and we may not be that far away in terms of years from being able to build it \cite{peter_morgan_2019}. 
+
+Machine learning (ML) is a sub-genre of AI where we \textit{train} computers to detect patterns in data quickly. One type of ML, deep learning, enables computers to beat humans in many games and predict outcomes of different events. 
+
+Research on the usage of AI in the medical field is particularly interesting, as the results can be life-changing \cite{topol2019}. Instead of getting diagnosed only by a single doctor, an AI can influence their decisions. The difference between independent doctors worldwide would not matter as much, and with high accuracy, doctors could instantly know a lot about the patient. 
+
+\emph{Three hundred and fifty million} people globally are fighting the burden of depression \cite{burden_of_depression}, which in a lot of the cases does not end well for them. ML has the potential here to help with diagnoses, help in the process of prescribing the optimal medicine to patients and predict whether a person is likely to attempt suicide \cite{topol2019}. 
+
+There is no limit to the usefulness of ML in the medical field, and it can undoubtedly help in the field of mental health too. Consider bipolar disorder; a syndrome where a person experiences extreme mood swings. Say bipolar patients had a device that measured their heart rate among other things 24 hours a day could feed the data into a deep neural network that gave the user's bipolar state as output. That would be useful for both the patients and doctors/nurses. Using ML in this field of study could help many people get through their depression or mania, and potentially get rid of the condition altogether.
+
+In summary, diagnosing bipolar patients is a challenge, errors are made, and it potentially takes a lot of time. However, much information can be extracted from simple sensor data measurements over a span of time, and in this respect, ML has great potential. 
+
+We use ML to do experiments on recorded motor activity data from participants using a smartwatch. The included participants are divided into a condition group (participants with a mental condition) and a control group (participants without depression). With this data, we aim to detect which group participants are in, and also their severity of depression. The primary motivation for these experiments comes from earlier work done by Garcia-Ceja, E. et al. (\cite{GarciaCeja2018_classification_bipolar}), where they used ML to detect depression on the same participants. However, our usage of ML is different, and whether our performance is any better is a topic of discussion.
+
+\section{Thesis Overview}
+Based on the diagnosis challenges and the potential of ML on datasets collected from bipolar patients, we aim to find whether one specific type of ML, convolutional neural networks (CNN), together with motor activity measurements as input data, is a valid approach to detecting depression. We divide our goal into three objectives which we implement ML models to satisfy. We provide a walkthrough of the whole process, from data preprocessing to predictions and classifications from the trained ML models which we use to determine, for each objective, the final detected outcome of tested participants.
+
+\begin{itemize}
+    \item \textbf{The first objective} is to build a CNN model to detect depression. It should be able to detect (classify) whether a participant (where the motor activity measurements are unseen by the model while training) belongs to the control group or the condition group. We view this objective as the most relevant because it is the only objective that is comparable to earlier research.
+    \item \textbf{The second objective} is to build a CNN model to detect \textit{levels} of depression. We divide the levels of depression into the following groups based on the Montgomery-Åsberg Depression Rating Scale (MADRS): no depression, mild, moderate and severe depression. The CNN should be able to classify the depression level of an arbitrary participant.
+    \item \textbf{Our third and last objective} is building CNN model that predicts the MADRS score of participants. The main difference between the second and this goal is the architecture of the model. Instead of a classification model (multiple possible outcomes), we create a prediction model (one possible outcome, which can be any number). We evaluate this neural network by calculating the \textit{mean squared error (MSE)} of the predicted labels vs. the correct labels.
+\end{itemize}
+
+However, before getting started building CNN models, we experimented with linear regression. This type of machine learning can show whether variables are related to the target variable. In our experiment, we trained a linear regression model on several variables within the dataset to predict whether participants were in the control group or condition group (essentially the same as objective 1, only with linear regression). We achieved perfect performance with the models trained on the MADRS value of participants, which was an expected result.
+
+We built a system that addresses the objectives defined above. This system uses \textit{real} data from depressed patients and non-depressed participants in order to see whether one can detect depression with ML.
+
+We evaluate the performance of classification models (objective 1 and 2) using a \textit{leave one participant out} technique combined with majority voting. In the first objective, we achieved an F1-score of 0.70, which is promising but it still has room for improvement. The second objective resulted in an F1-score of 0.30, which is significantly worse than the first. However, as described in chapter \ref{chapter:training}, this model detects non-depressed participant correctly at a high performance. For the third objective, we achieved an MSE of approximately 4.0, which is also promising. 
+
+The reported performance indicates that motor activity measurements can give useful information about mental health issues. However, the results are only at best promising. Applying our ML models in the real world needs to happen together with experts, especially for the second and third objectives. 
+
+\newpage
+
+\section{Thesis outline}
+In \textbf{chapter \ref{chapter:background}}, we provide background information about mental health and ML. In mental health, we describe the topics of bipolar disorder and how the Montgomery-Åsberg Depression Rating Scale can tell patients how depressed they are. Then we introduce important topics within ML, and how easy it is to get started writing models in Keras, a ML framework for Python. Related work is the last section in chapter 2, where we mention several papers related to the topics of mental health and ML. \\
+
+\noindent \textbf{Chapter \ref{chapter:planning}} is where we describe the objectives that we want to achieve in the thesis. We present the dataset we use to achieve those objectives, and also how we structure and preprocess the data so that it can be used to train models. Performance metrics that we use later in order to evaluate a trained model is another topic we define in the chapter.\\
+
+\noindent \textbf{Chapter \ref{chapter:models}} contains a description of the neural network model for each objective in addition to a linear regression model. We describe all layers in the models and include the source code used to create them in the ML framework Keras. \\
+
+\noindent In \textbf{chapter \ref{chapter:training}}, we walk through how we trained the models in order to reach our objectives, then evaluated them with metrics described in chapter 3. \\
+
+\noindent \textbf{Chapter \ref{chapter:discussion}} is where we discuss whether convolutional neural networks can be used to classify and predict mental health issues. We also suggest real-world applications of our work, focusing on the pros and cons of creating and trusting an AI for mental health diagnoses. \\
+
+\noindent \textbf{Chapter \ref{chapter:conclusion}} contains our conclusion and a summary of the chapters, and we give directions for future research.

@@ -1,0 +1,35 @@
+\section{Create segments and labels}
+\begin{figure}[!ht]
+\begin{code}
+  \begin{minted}[linenos]{python}
+  def create_segments_and_labels(segment_length, output_classes=2, step=60):
+    scores = pd.read_csv('scores.csv')
+    scores['afftype'].fillna(0, inplace=True)
+    
+    segments = []
+    labels = []
+
+    for person in scores['number']:
+      p = scores[scores['number'] == person]
+      df_activity = pd.read_csv(f'{person}.csv')
+
+      for i in range(0, len(df_activity) - segment_length, step):
+        segment = df_activity['activity'].values[i : i + segment_length]
+        segments.append([segment])
+
+        if p['afftype'].values[0] == 0: 
+          labels.append(0)
+        else:
+          labels.append(1)
+
+    segments = np.asarray(segments).reshape(-1, segment_length, 1)
+    segments = segments.reshape(segments.shape[0], segment_length)
+
+    labels = to_categorical(np.asarray(labels), output_classes)
+    
+    return segments, labels
+  \end{minted}
+  \caption{This function reads scores.csv, and generates one list of time sliced sequences and one list (labels) of the corresponding participants group (control/condition). It also makes the list of labels into a categorical array so that it can be used in classification.}
+  \label{code:reading_dataset}
+\end{code}
+\end{figure}

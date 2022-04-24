@@ -1,0 +1,48 @@
+- Mental health monitoring with multimodal sensing and machine learning
+	- E. Garcia-Ceja et al. surveyed recent research works in the field of Mental Health Monitoring Systems (MHMS). 
+	- Data is available from many different sensor sources (smart-devices, etc.)
+	- Usages of sensor data include information about physical activity, location, mood, social relationships
+	- Different sensor types/devices
+	- Different study types
+
+
+- O'Brien, J.T. et al.  
+	- Association - depresstheion
+	- 7 days
+	- Wearable (wrist accelerometer)
+	- 29 adults with depression, 30 healthy. > 60 years
+	- Reduced physical activity in condition group
+
+- Faurholt-Jepsen, M. et al. 
+	- Association - bipolar disorder
+	- 12 weeks
+	- Wearable (smartphone) - sms, calls, screen, location
+	- 29 bipolar patients
+	- Found correlations between bipolar states severity and screen time, number of calls/day, cell tower ids.
+
+- Grünerbl, A. et al.
+	- Detection - bipolar disorder
+	- 12 weeks
+	- Wearable (smartphone) - phone logs, microphone
+	- 10 bipolar patients (18-68 years)
+	- 76% average recognition accuracy with Naive Bayes and 97% recall in state change detection
+
+	- Detection - bipolar disorder
+   	- 12 weeks
+	- Wearable (smartphone) - accelerometer, GPS
+ 	- 10 bipolar patients (18-68 years)
+	- State change detection recall 94% and state recognition 80% accuracy with Naive Bayes
+
+- Maxhuni, A. et al.
+	- Detection - bipolar disorder
+   	- 12 weeks
+	- Wearable (smartphone) - accelerometer, microphone, questionnaires
+	- 10 bipolar patients (18-68 years)
+	- 85% classification accuracy with Bagging
+
+- Andrew G. et al.
+	- Forecasting/detection - depression
+	- Short-term
+	- Social Media - instagram photos
+	- 71 viable participants (19-55 years)
+	- Correctly identified 70% of all depressed cases with Random Forest

@@ -1,0 +1,20 @@
+To calculate the information gain for a predictor node, we need to calculate the \textit{Entropy difference} between only the target, and the predictor combined with target.
+The entropy formula for the target is \\$ E(p, q) = -p \cdot log_{2}(p) - (q \cdot log_{2}(q)) $, where $ p $ and $ q $ are the chances for each target outcome. 
+In my example, where 4 of the outcomes are "Yes" and 3 are "No", $ p = 0,43 $ and $ q = 0,57 $. The entropy is then \\
+$ -(0,43 log_{2} \cdot 0,43) - (0,57 log_{2} \cdot 0,57) = 0,986 $. For a predictor the formual is $ EP(T, X) = \sum_{c \in X} P(c) \cdot E(c) $, 
+which means to add up the products of the probability of the predictor and the entropy of the different outcome of a predictor. The "Information Gain" is
+then $ G(T, X) = E(T) - EP(T, X) $. This is done to all predictors, and the predictor with the highest gain will be chosen as root node. 
+
+\newpage
+Applied to my example: 
+Gain for predictor "Temperature" is 
+\[ EP(T, X) = P(15C) \cdot E(15C) + P(12C) \cdot E(12C) + P(6C) \cdot E(6C) \] 
+\[ = (3/7) \cdot E(2, 1) + (2/7) \cdot E(1, 1) + (2/7) \cdot E(1, 1) \]
+\[ = 0,42 \cdot 0,91 + 0,29 \cdot 1 + 0,29 \cdot 1 = 0,96 \]
+\[ G = 0,986 - 0,96 = 0,026 \]
+
+Gain for predictor "Outlook" is 
+\[ EP(T, X) = P(Sun) \cdot E(Sun) + P(Overcast) \cdot E(Overcast) + P(Rain) \cdot E(Rain) \] 
+\[ = (3/7) \cdot E(2, 1) + (2/7) \cdot E(1, 1) + (2/7) \cdot E(1, 1) \]
+\[ = 0,42 \cdot 0,91 + 0,29 \cdot 1 + 0,29 \cdot 1 = 0,96 \]
+\[ G = 0,986 - 0,96 = 0,026 \]

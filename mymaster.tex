@@ -1,0 +1,110 @@
+\documentclass[UKenglish]{ifimaster}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc,url}
+\urlstyle{sf}
+\usepackage{babel,textcomp,csquotes,duomasterforside,varioref,graphicx}
+\usepackage[backend=biber,style=numeric-comp]{biblatex}
+%\usepackage{color}   %May be necessary if you want to color links
+\usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage{csvsimple}
+\usepackage{pgfplots}
+\usepackage[toc,page]{appendix}
+
+\newlength\figureheight
+\newlength\figurewidth
+\pgfplotsset{compat=1.13} 
+
+\hbadness=99999
+\hfuzz=9999pt
+
+\hypersetup{
+   colorlinks=false, %set true if you want colored links
+   linktoc=all,     %set to all if you want both sections and subsections linked
+   %linkcolor=black,  %choose some color if you want links to stand out
+}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code}
+\newcommand{\problemStatement}{One-Dimensional Convolutional Neural Networks on Motor Activity Measurements in Detection of Depression}
+
+\title{\problemStatement}
+\subtitle{
+% Subtitle %
+}
+
+\author{Marie Ihle Frogner}
+ 
+\bibliography{bibliography}
+
+\begin{document}
+\duoforside[dept={Department of Informatics},
+program={Programming and Networks},
+long]
+
+\frontmatter{}
+\chapter*{Abstract}
+\input{parts/0_Pre/0_Abstract}
+
+\chapter*{Acknowledgements}
+\input{parts/0_Pre/1_Acknowledgements}
+
+\tableofcontents{} 
+\listoffigures{}
+\listoftables{}
+
+\mainmatter{}
+\part{Introduction}
+
+\chapter{Introduction}
+\label{chapter:introduction}
+\input{parts/1_introduction/1_Introduction/introduction}
+
+\chapter{Background}
+\label{chapter:background}
+\input{parts/1_introduction/2_Background/background}
+
+\part{Methodology}
+\chapter{Planning and Preparing Data}
+\label{chapter:planning}
+\input{parts/2_methodology/1_planning_the_project/planning}
+
+\chapter{Implementation of Machine Learning Models}
+\label{chapter:models}
+\input{parts/2_methodology/2_implementation/implementation}
+
+\chapter{Training the models}
+\label{chapter:training}
+\input{parts/2_methodology/3_training/training}
+
+\part{Conclusion}
+\chapter{Discussion}
+\label{chapter:discussion}
+\input{parts/3_conclusion/1_discussion/discussion.tex}
+
+\chapter{Conclusion and Future work}
+\label{chapter:conclusion}
+\input{parts/3_conclusion/2_conclusion/conclusion.tex}
+
+\backmatter{}
+\printbibliography
+
+\begin{appendices}
+\chapter{Source code}
+\label{appendix:source_code}
+Source code used in the thesis is hosted at \url{https://github.com/marieihlefrogner/conv1d-depression}. However, simplified versions of the code are presented on the next pages.
+\newpage
+\input{code/tex/create_segments_and_labels}
+\newpage
+\input{code/tex/regression}
+\newpage
+\input{code/tex/1d_conv_net}
+\end{appendices}
+
+\end{document}

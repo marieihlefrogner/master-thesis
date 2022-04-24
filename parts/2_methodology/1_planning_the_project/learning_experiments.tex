@@ -1,0 +1,23 @@
+\subsection{Learning experiments}
+
+We needed to learn more about convolutional neural networks, so we proceeded to implement an image recognition algorithm. We found a tutorial on how to make a 2D CNN for classifying cats and dogs from images \cite{2d_cnn} and thought it would be an excellent way to learn.
+
+It was both a fun and informative experience in implementing this. Especially when we extended the script to allow an image URL to predict on, we could browse for images of cats and dogs on the Internet, and find out if the model could classify them (in most cases it did). We even tried inputting images of humans to the model for fun, to see if they looked more like a dog or a cat.
+
+However as mentioned before, the activity measurements are of one dimension, so we could not use this network.
+
+
+To learn more about one-dimensional convolutional neural networks, we followed a tutorial \cite{1d_cnn}, which used a dataset containing accelerometer data from a smartphone on the participant's waists. The goal here was to predict what a given person is doing at the time, given the accelerometer data for that time slice. What the given person is doing is one of the following:
+
+\begin{itemize}
+  \item Standing
+  \item Walking
+  \item Jogging
+  \item Sitting
+  \item Upstairs
+  \item Downstairs
+\end{itemize}
+
+As we followed the tutorial and implemented the model, we learned a lot about how one-dimensional convolutional neural networks work and how we should structure our data to make it work for our dataset.
+
+We also got some ideas about where our dataset could provide more data. What if the dataset containing the current mental state of the bipolar patient? Then someone could make some automated system that always can tell a patient whether they are not depressed, manic or depressive. However data collection for this kind of task would be difficult because we cannot always know what the patient thinks, nor does the patient. The tutorial dataset is different because it is easy to differentiate physical states of the body like standing or walking.

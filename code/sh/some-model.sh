@@ -1,0 +1,1 @@
+python3 madrs_score_prediction.py --segment_length 2880 --epochs 5000 --optimizer adam --batch_size 16 --learning_rate 0.0001 --model_path ../models/madrs_score_Conv1D_02-28-2019T16:09:24_2880_60_1000_16_opt-adam_lr-0.0001.h5

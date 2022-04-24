@@ -1,0 +1,132 @@
+\begin{figure}[h]
+  \begin{center}
+      \includegraphics[height=4cm]{img/flow_detection.pdf}
+      \caption{Diagram of how we detect whether a participant is depressed or not (first objective) after we have trained the CNN. }
+      \label{figure:flow}
+  \end{center}
+\end{figure}
+
+\noindent As described in chapter \ref{chapter:introduction}, our objectives in this thesis include creating three CNN models:
+
+\begin{itemize}
+  \item Detect whether a participant is depressed or not.
+  \item Detect whether a participant has no depression, mild depression, moderate depression or severe depression.
+  \item Predict a participant's MADRS score.
+\end{itemize}
+
+\noindent We also implemented a linear regression model that trained explicitly on the demographic data. The reason for this experiment, which does not include a CNN, was to see if we could learn from any column whether the participants are depressed or not. This experiment is further explained in chapter \ref{chapter:models}. 
+
+For our CNNs, the input data is processed into time-sliced segments of motor activity measurements. Then we send the segments to the CNNs, which attempts to detect the correct value for each segment. During the training process, correct values have to be visible to the model for it to learn (because we use a supervised learning strategy). After training the models, they should be able to classify/predict the correct value depending on the objective. Because we split the measurements of a participant into segments, we needed to gather all of the detected value so that we could return one final detection. Majority voting is the method used for this, which means that we use the most popular detection (label with most \textit{votes}). How the system works from A to Z detecting whether a participant is depressed or not is visualized in figure \ref{figure:flow}.
+
+We implemented one-dimensional CNNs that were able to take the segments of activity data as input. Also, we wanted the neural network models to be as similar as possible. With few changes in the layers (preferably only the last few layers), we could use a model on another objective. It was, however, only possible for the first two objectives, as they are both about classification and we only changed the number of units in the output layer. We changed more layers for the third objective. We describe of all neural network models in detail in chapter \ref{chapter:models}.
+
+In this chapter, we describe the structure of the dataset, how we use the dataset to create activity segments, and how we can test and evaluate the performance of machine learning models.
+
+\section{The dataset}
+
+\begin{figure}[!ht]
+  \centering
+    \includegraphics[height=3.5cm]{img/demographics.png}
+    \includegraphics[height=3.5cm]{img/demographics_control.png}
+    \caption{The 5 first and the 5 last rows in demographic dataset (scores.csv). The displayed participants are from the condition group (above) and control group (below).}
+    \label{figure:demographics}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[height=6cm]{img/activity_condition_1.pdf}
+  \includegraphics[height=6cm]{img/activity_control_1.pdf}
+  \caption{Motor activity measurements for a participant in the condition group (above) and control group (below). The condition group participant is male between 35 and 39 years old, diagnosed with unipolar depression. The control group participant is female between 45 and 49 years old. The number on the X-axis corresponds to the minute throughout the measurement period, and the number on the Y-axis is the activity levels.}
+  \label{figure:participant_activity}
+\end{figure}
+
+In this thesis, we used a dataset (called \textit{Depresjon} after the Norwegian word for depression) containing motor activity measurements from participants wearing an Actiwatch (model AW4 from Cambridge Neurotechnology Ltd, England). The dataset was collected originally for a study about behavioral patterns in schizophrenia vs. major depression \cite{Berle2010}. The participants we focus on are 23 bipolar/unipolar patients and 32 non-depressed contributors, removing the participants with schizophrenia. We will refer to the bipolar/unipolar group as the \textit{condition group}, and the non-depressed group as the \textit{control group}. Garcia-Ceja et al. also follows this convention in their work \cite{GarciaCeja2018_classification_bipolar}.
+
+The dataset is in two parts. One part includes the demographics of each participant (see figure \ref{figure:demographics}), where the fields are:
+
+\begin{itemize}
+    \item \textbf{number}: a unique id for each participant
+    \item \textbf{days}: number of days of data collection 
+    \item \textbf{gender}: 1 = female and 2 = male
+    \item \textbf{age}: age of the participant (grouped by four years)
+    \item \textbf{afftype}: affliction type, where 1 is for bipolar type II, 2 equals unipolar depressive, and 3 for participants with bipolar type I
+    \item \textbf{melanch}: 1 means a participant has melancholia, 2 means no melancholia
+    \item \textbf{inpatient}: whether the patient is inpatient (1) or outpatient (2)
+    \item \textbf{edu}: how many years of education the participant has completed (grouped by four years)
+    \item \textbf{marriage}: married/cohabiting (1) or single (2)
+    \item \textbf{work}: whether the participant is working/studying (1) or not (2)
+    \item \textbf{madrs1}: MADRS score before activity measurement started
+    \item \textbf{madrs2}: MADRS score after activity measurements ended
+\end{itemize}
+
+The second part of the dataset includes motor activity measurements about participants in the condition group and control group, as one file for each participant. These files are placed in two folders for the two groups respectively, and there is one file for each participant with filename as "GROUP\_X.csv" where X is their id and GROUP is either condition or control. Inside each file, we can find a list of motor activity measurements for every minute of the data collection period.
+
+Looking at example participants from both groups (figure \ref{figure:participant_activity}), we can not immediately tell with our eyes that they are different. However, by feeding the data into a CNN, we aimed to find patterns that were specific to the two participant groups. 
+
+\section{Data Preprocessing}
+\label{section:data_preprocessing}
+
+We wrote a function (see source code in appendix \ref{code:reading_dataset}), which was responsible for preparing the data before we sent it into the neural network. We started by defining a \textit{segment length} ($L$), which is how much data (minutes) we want inside each segment. We experiment with the value of $L$ in chapter \ref{chapter:training}. Next, we needed a value for how many indexes to step after each iteration, $S$. We kept this value at one hour, meaning $S=60$. Between the different objectives, this function will only be different in how it yields the \textit{labels}.
+
+\begin{itemize}
+  \item First we read the \textit{global} dataset, where we find each participant and whether they are in the control or condition group. As there is no \textit{afftype} value for non-depressed participants, we set this to 0. Other possible values are 1, 2 and 3. We do the same for the \textit{madrs2} column.
+  \item Then we iterate over the participants:
+
+  \begin{itemize}
+    \item Build segments and labels arrays for current participant:
+    \begin{itemize}
+      \item Append a segment that is of length $L$ to the list of segments. 
+      \item Append a value to labels depending on the objective (see the subsection about output data).
+      \item Increase the index by $S$, then repeat until we have added all segments for the current participant.
+    \end{itemize}
+    \item Example element in segments and labels for a participant in the condition group: \\
+    \textbf{segments[i] = [[0], [143], [0], [20], [166], [160], [306], [277]]}\\
+    \textbf{labels[i] = [[1], [1], [1], [1], [1], [1], [1], [1]]}
+  \end{itemize}
+  
+  \item Make the list of labels into a \textit{categorical} 2D matrix (see table \ref{table:categorical_labels}) with a \textbf{1} in only one of the columns, instead of a single-dimensional list. This is only needed in the first two objectives.
+\end{itemize}
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{| l | l |}
+      \hline
+      \textbf{Control group} & \textbf{Condition group}  \\ \hline
+      0                    &  1                \\ \hline
+      1                    &  0                \\ \hline
+      0                    &  1                \\ \hline
+      1                    &  0                \\ \hline
+      1                    &  0                \\ \hline
+      0                    &  1                \\ \hline
+      0                    &  1                \\ \hline
+      1                    &  0                \\ \hline
+    \end{tabular}
+    \caption{Categorical Labels. A 0 and a 1 (first row) means that the participant is in the condition group.}
+    \label{table:categorical_labels}
+  \end{center}
+\end{table}
+
+The output data was an array with a value for each segment, corresponding to the objective and the participant. After creating it, we used a helper function from Keras called \textit{to\_categorical} to transform the array into a categorical matrix instead of a list of labels. Table \ref{table:categorical_labels} is an example of how a categorical matrix looks. The value we used to build this array was based on the objective:
+
+\begin{itemize}
+  \item For classifying control/condition group, this list was built to contain the values \textbf{0} or \textbf{1} for the labels \textbf{CONTROL} and \textbf{CONDITION}, which was chosen according to the group the participants were in. For example, \textbf{labels[i] = [0, 1]}, meaning that segment $i$ is labeled as \textbf{CONDITION} group. 
+  
+  \item To classify depression classes, we used MADRS scores divided into four classes by some cutoff-points:
+  \begin{itemize}
+    \item 0-6: normal
+    \item 7-19: mild depression
+    \item 20-34: moderate depression
+    \item 34-60: severe depression
+  \end{itemize}
+  So instead of labelling the segments as \textbf{CONTROL} or \textbf{CONDITION}, we labeled them as \textbf{NORMAL}, \textbf{MILD} and \textbf{MODERATE} (we ignored severe depression as there are no participants with MADRS scores this high). An example element in this array after applying \textit{to\_categorical()} is \textbf{labels[i] = [0, 1, 0]}, which means that segment $i$ is labeled as \textbf{MILD} depression.
+  \item For predicting MADRS scores, we built the array of the MADRS score of the participants. Example: \textbf{scores[i] = [18]}.
+\end{itemize}
+
+\section{Performance}
+
+\input{parts/2_methodology/1_planning_the_project/performance.tex}
+
+\section{Summary}
+In this chapter, we introduced the general idea and flow of how the system detects the objectives of our goal, which for the first objective is visualized in figure \ref{figure:flow}. We presented the dataset in two parts, one containing demographic data and another one with motor activity measurements for each participant. Then, we described in detail how the data preprocessing algorithm works, which is responsible for translating the dataset into \textit{segments} we could input to the CNN, and \textit{labels} used for supervised learning. Finally, we introduced how we evaluate the performance of our CNN, in which we described the terminology of loss functions and optimizers, classification metrics, and training/testing data splits. 
+
+Now that we have defined how everything around the CNN works, we can proceed to describe how we implemented the CNNs, which is the topic of the next chapter. 

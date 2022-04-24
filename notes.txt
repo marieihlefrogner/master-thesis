@@ -1,0 +1,5 @@
+Fargesider, definert av hvilken side i PDFen, ikke sidetallet nederst på sidene:
+1 (forside), 60, 65, 67, 70, 76, 77
+Totalt: 7 fargesider
+
+1/forside, 60/44, 65/49, 67/51, 70/54, 76/60, 77/61

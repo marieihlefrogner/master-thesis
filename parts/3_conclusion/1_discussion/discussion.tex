@@ -1,0 +1,29 @@
+\section{Convolutional neural networks for mental health detection}
+We have evaluated how CNNs performed on motor activity measurements from bipolar and unipolar depressed patients (condition group) together with non-depressed control participants. We completed our objectives of creating classification models for detecting whether a participant belongs to the control group or the condition group, the depression class of a participant (not depressed, mild depression or moderately depressed), and finally a prediction model for estimating the MADRS score of participants. 
+
+We did not leave one participant out on the last model, because it had to be trained for at least 1500 epochs before the mean squared error was acceptable (see figure \ref{figure:madrs_prediction_history}). Training took several hours, and multiplying that with 55 (one training session for each participant), the experiment would take days. We consider this to be a weakness in our work and it makes the MADRS prediction model less trustworthy. 
+
+\subsection{Limited number participants}
+The dataset consists of only 55 participants, which is very limited. It was a good set of data for us in our thesis, but in order to use it in the real world, more participants is a requirement. Measurements from more people and different ethnicities and age groups around the world would significantly increase the viability of the dataset. We suggest collecting more data before applying this research anywhere in the real world.
+ 
+We think that the number of participants is the main issue that made the classifier only decent when leaving one participant out. The difference between people is far too big for our CNNs to handle with a dataset containing such few participants. We divided the participants into control/condition group. The condition group itself contains participants who suffer from one type of depression, regardless of which type of bipolar disorder (or unipolar depressed) they are diagnosed with. With data from more people, the network could potentially pick up and learn more similarities between people within the same \textit{group}, and be able to classify with higher performance. 
+
+\subsection{Input data and hyper-parameters}
+Detecting control/condition group was our first experiment, and we found that for our dataset the optimal amount of data inside each segment was 2880 (48 hours in minutes). Following our calculations, the optimal segment length was 5760 (96 hours in minutes) for the next experiment where the objective was to detect depression classes. When we predicted MADRS scores, the optimal segment length was 2880 once again. 
+
+We are aware of the fact that our calculations only apply to the specific segment lengths tested, and testing the performance using longer segments may have resulted with something else. However, we did not prioritize to do more of such experiments, as the training time would increase too much if we were to continue using the hardware that we used in our other experiments. 
+
+It is also possible to tweak hyper-parameters more than we ended up doing. In the first two experiments, we did not touch anything else than the length of the input segments and the number of epochs. It was first in the prediction model that we started experimenting with different optimizers and the learning rate parameter. 
+
+We suggest that future research experiment more with hyper-parameters. However, it is difficult to know whether tweaking hyper-parameters is a potential fix to the poor performance in the leave one participant out experiment. We assume it would not help that much because the training accuracy always ended up above 0.99. 
+
+\subsection{Compared to earlier research}
+Earlier research on the topic of classifying depression is different from this thesis, as most of them compare how different types of ML performs classification. In contrast, we focused on one specific type of supervised learning: CNNs, which we used to complete the different objectives. Instead of creating baseline models and comparing our results to them, we compare our work to what Garcia-Ceja, E. et al. achieved on the same dataset \cite{GarciaCeja2018_classification_bipolar} (we only focus on our first objective in this comparison, as it is the only experiment they also performed). 
+
+Overall, we achieved an F1-score of 0.70 for classifying control/condition group, which is slightly better than the F1-scores from the research of Garcia-Ceja, E. et al. (\cite{GarciaCeja2018_classification_bipolar}) without oversampling. They achieved 0.66 for the deep neural network and 0.67 for the random forest. When using SMOTE as a technique for generating more data, they increased their random forest F1-score to 0.73. A suggestion for future experiments is to attempt using the same sampling strategies as Garcia-Ceja, E. et al. on the data passed into our CNN, and check if the performance gets any better. 
+
+Our CNN performed a little bit better than the random forest and the deep neural network of Garcia-Ceja, E. et al. (\cite{GarciaCeja2018_classification_bipolar}), but it was not as good as we hoped considering the results of other experiments. The question of whether CNNs as a ML approach is a reliable option to use in mental health remains unanswered, as our results were only promising and not anywhere close to perfect. Nonetheless, our opinion is that it was a step in the right direction, and we hope researchers continue to explore this type of ML.
+
+Garcia-Ceja, E. et al. also suggested future research to explore classification based on the MADRS scale, which we implemented for our second objective. The results were similar to our first experiment; not so good performance overall but able to classify most non-depressed participants correctly. 
+
+\input{parts/3_conclusion/1_discussion/real_world.tex}

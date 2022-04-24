@@ -1,0 +1,56 @@
+\section{Classification CNN}
+\begin{figure}[!ht]
+\begin{code}
+  \begin{minted}[linenos]{python}
+  def create_classification_model(L, n_output_layers):
+    model = Sequential()
+
+    model.add(Reshape((L, 1), input_shape=(L,)))
+    model.add(Conv1D(100, 10, activation='relu', input_shape=(L, 1)))
+    model.add(Conv1D(100, 10, activation='relu'))
+    model.add(MaxPooling1D(2))
+    model.add(Conv1D(160, 10, activation='relu'))
+    model.add(Conv1D(160, 10, activation='relu'))
+    model.add(GlobalAveragePooling1D())
+    model.add(Dropout(0.5))
+    model.add(Dense(n_output_layers, activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy', 
+                  optimizer='adam', 
+                  metrics=['accuracy'])
+
+    return model
+  \end{minted}
+  \caption{1D CNN Model for Classification. A total of four convolutional layers together with pooling compiled with Categorical Crossentropy enables the model to classify.}
+  \label{code:1d_conv_net_classifier}
+\end{code}
+\end{figure}
+
+\newpage
+
+\section{Prediction CNN}
+\begin{figure}[!ht]
+\begin{code}
+  \begin{minted}[linenos]{python}
+  def create_prediction_model(L):
+    model = Sequential()
+
+    model.add(Reshape((L, 1), input_shape=(input_shape,)))
+    model.add(Conv1D(128, 2, activation='relu', input_shape=(L, 1)))
+    model.add(MaxPooling1D(pool_size=2, strides=1))
+    model.add(Conv1D(64, 2, activation='relu'))
+    model.add(GlobalAveragePooling1D())
+    model.add(Flatten())
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(1))
+    
+    model.compile(loss='mean_squared_error', 
+                  optimizer='adam', 
+                  metrics=['mse'])
+
+    return model
+  \end{minted}
+  \caption{1D CNN Model for Prediction. The layers are changed to be able to predict a value instead of performing classification. The model is compiled with the loss function Mean Squared Error, and uses the optimizer Adam}
+  \label{code:1d_conv_net_predictor}
+\end{code}
+\end{figure}

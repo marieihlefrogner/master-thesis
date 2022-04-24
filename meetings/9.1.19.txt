@@ -1,0 +1,13 @@
+- Use "we" not "I"
+
+- Predict MADRS score after
+
+- Why I did average by minute
+
+- Granularity: Hour by hour, day by day, minute by minute
+
+- Split dataset in half different ways to expriment.
+
+- Last layer: SoftMax and class entropy / Simple outout layer + mean ... error loss 
+
+- weka

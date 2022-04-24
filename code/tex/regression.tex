@@ -1,0 +1,16 @@
+\section{Linear regression model}
+\begin{figure}[!ht]
+  \begin{code}
+    \begin{minted}[linenos]{python}
+      def regression_model():
+        model = Sequential()
+        model.add(Dense(5, input_dim=1, activation='relu'))
+        model.add(Dense(1))
+
+        model.compile(loss='mse', optimizer='adam', metrics=['mse'])
+        return model
+    \end{minted}
+    \caption{Linear Regression Model using Keras. The model contains two dense layers; one for the inputs and another for the outputs.}
+    \label{code:regression_model}
+  \end{code}
+\end{figure}

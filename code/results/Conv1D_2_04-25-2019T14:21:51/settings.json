@@ -1,0 +1,1 @@
+{"input_shape": 1440, "segment_length": 1440, "n_output_classes": 2, "loss_function": "categorical_crossentropy", "metrics": ["accuracy"], "optimizer": "adam", "verbose": 1, "directory": "../results/Conv1D_2_04-25-2019T14:21:51"}

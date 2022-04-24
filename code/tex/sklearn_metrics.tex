@@ -1,0 +1,21 @@
+\begin{figure}[h]
+\begin{code}
+  \begin{minted}[linenos]{python}
+    from sklearn.metrics import confusion_matrix, 
+                                precision_score, 
+                                recall_score, 
+                                f1_score, 
+                                classification_report
+
+    # ... set up model, make predictions ...
+
+    print(confusion_matrix(y, y_class_predicted))
+    print(precision_score(y, y_class_predicted))
+    print(recall_score(y, y_class_predicted))
+    print(f1_score(y, y_class_predicted))
+    print(classification_report(y, y_class_predicted))
+  \end{minted}
+  \caption{Metric score functions from sklearn.}
+  \label{code:sklearn_metrics}
+\end{code}
+\end{figure}

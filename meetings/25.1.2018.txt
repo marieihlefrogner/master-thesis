@@ -1,0 +1,27 @@
+Master
+
+- Essay outline
+    - introduction, background for thesis
+        - can Machine learning be used to predict bipolar states with different types of input data?
+        - info about bipolar
+        - info about machine learning, how it can help
+        - what people already did in this field (paper)
+        - identifying a problem, how to solve it
+
+- Machine Learning
+    - Neural network model
+
+    - lstm rnn
+    - random forest (scikit-learn)
+        - window based
+
+- Sound analysis
+
+- Python libraries
+    - Librosa (sound analysis)
+    - Tensorflow, Keras (deep learning), random forest (scikit-learn)
+    - ...
+
+- Weather data?
+
+- time based deep Learning
